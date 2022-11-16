@@ -19,7 +19,6 @@ if __name__ == '__main__':
                 result = cursor.fetchall()
 
                 if len(result) == 0:
-                    print("no new shops to notify")
                     time.sleep(2)
                     continue
                 for res in result:
@@ -33,7 +32,7 @@ if __name__ == '__main__':
                     Shop ID: {res['shop_id']}, 
                     Current month's budget: {res['budget amount']}, 
                     Expenditure to date: {res['amount spent']}, 
-                    Available budget: {res['available']}""")
+                    Available budget: {res['available']}""", flush=True)
 
             time.sleep(2)
 
