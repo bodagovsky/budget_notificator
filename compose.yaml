@@ -1,0 +1,32 @@
+services:
+  notifier:
+    build:
+      context: notifier
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8
+    command: '--default-authentication-plugin=mysql_native_password'
+    restart: always
+    logging:
+      driver: none
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 --password="$$(cat /run/secrets/db-password)" --silent']
+      interval: 3s
+      retries: 5
+      start_period: 30s
+    secrets:
+      - db-password
+    environment:
+      - MYSQL_DATABASE=stylight
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+
+secrets:
+  db-password:
+    file: notifier/db/password.txt
