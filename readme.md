@@ -15,6 +15,8 @@ When shop reaches or exceeds its 100% threshold it is notified again and goes of
 ## Assumptions
 In my decision I have assumed that shops offline never got their notifications about being setting offline
 Also, I assumed that shop can only go offline when its budget is over, so my app only notifies about 50% threshold those shops which are currently online
+The last, but not least: I intentionally did not take the current timestamp to filter budgets, but took the last possible date, because I assumed that every month we have some record in db
+Taking the timestamp would result in ignoring the fixtures we already have, so I wanted you to see app working with data presented in migrations
 
 ## Does your solution avoid sending duplicate notifications?
 Yes, because it checks, whether the shop has already been notified, or it is online at the moment when 100% budget threshold is reached
@@ -23,5 +25,5 @@ Yes, because it checks, whether the shop has already been notified, or it is onl
 I have implemented a worker, which selects the records from database every 2 seconds, so the change will not be missed
 
 ## More thoughts
-If I would had such task in real life, I would have implemented the Transactional Outbox pattern as I think that it would provide best consistency when updating database record and sending notifications
+If I had such task in real life, I would have implemented the Transactional Outbox pattern as I think that it would provide the best consistency when updating database record and sending notifications
 https://microservices.io/patterns/data/transactional-outbox.html
